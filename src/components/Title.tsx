@@ -1,3 +1,4 @@
+import AuthenticatedContent from "./AutenticatedContent";
 import NavBar from "./NavBar";
 import PizzaList from "./PizzaList";
 
@@ -6,6 +7,7 @@ const Title: React.FC = () => {
     <div className="text-center my-8">
       <NavBar />
       <PizzaList />
+      <AuthenticatedContent />
     </div>
   );
 };

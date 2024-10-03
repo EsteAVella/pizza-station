@@ -1,17 +1,19 @@
 import React from "react";
 import LoginForm from "../components/LoginForm";
-import { login } from "../services/authService";
+import { login as authServiceLogin } from "../services/authService";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
-
+  const { login } = useAuth();
   const handleLogin = async (username: string, password: string) => {
-    const success = await login(username, password);
+    const success = await authServiceLogin(username, password);
     if (success) {
       // Redirige al dashboard o muestra un mensaje de éxito
       console.log("Login successful");
       navigate("/");
+      login();
     } else {
       // Muestra un error
       console.error("Login failed");
