@@ -5,7 +5,6 @@ const LoginButton: React.FC = () => {
   const navigate = useNavigate();
 
   const handleLoginClick = () => {
-    console.warn("Chester estaria orgulloso de mi");
     navigate("/login");
   };
 

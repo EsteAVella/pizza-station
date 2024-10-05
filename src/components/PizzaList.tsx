@@ -1,32 +1,35 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
-
-interface Pizza {
-  id: number;
-  name: string;
-}
+import { deletePizza, getPizzas } from "../hook/CrudPizza";
+import { pizzaInterface } from "../interface/pizzaInterface";
+import { TrashIcon } from "@heroicons/react/outline";
 
 const PizzaList: React.FC = () => {
-  const [pizzas, setPizzas] = useState<Pizza[]>([]);
+  const [pizzas, setPizzas] = useState<pizzaInterface[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchPizzas = async () => {
       try {
-        const response = await axios.get<Pizza[]>(
-          "http://localhost:3333/pizzas"
-        );
-        setPizzas(response.data);
-        setLoading(false);
+        const data = await getPizzas();
+        setPizzas(data);
       } catch (err) {
         setError("Error fetching pizzas");
+      } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
+    fetchPizzas();
   }, []);
+
+  const onDelete = async (id: number) => {
+    const confirm = window.confirm("Are you sure to eliminate this pizza?");
+    if (confirm) {
+      await deletePizza(id);
+      setPizzas((prevPizzas) => prevPizzas.filter((pizza) => pizza.id !== id));
+    }
+  };
 
   if (loading) return <p className="text-center text-gray-600">Loading...</p>;
   if (error) return <p className="text-center text-red-500">{error}</p>;
@@ -43,9 +46,19 @@ const PizzaList: React.FC = () => {
               key={pizza.id}
               className="bg-gray-100 rounded-xl p-4 shadow-md hover:shadow-xl transition-shadow"
             >
-              <h2 className="text-xl font-semibold text-gray-800 mb-2">
-                {pizza.name}
-              </h2>
+              <div className="flex items-center">
+                <h2 className="text-xl font-semibold text-gray-800 mb-2 mr-2">
+                  {pizza.name}
+                </h2>
+                <button
+                  className="text-red-500 hover:text-red-700"
+                  onClick={() => {
+                    if (pizza.id !== undefined) onDelete(pizza.id);
+                  }}
+                >
+                  {<TrashIcon className="h-5 w-5" aria-hidden="true" />}
+                </button>
+              </div>
               <p className="text-gray-600">Here can show is ingredients</p>
             </div>
           ))}

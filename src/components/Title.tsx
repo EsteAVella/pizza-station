@@ -1,4 +1,5 @@
 import AuthenticatedContent from "./AutenticatedContent";
+import CreatePizza from "./CreatePizza";
 import NavBar from "./NavBar";
 import PizzaList from "./PizzaList";
 
@@ -8,6 +9,7 @@ const Title: React.FC = () => {
       <NavBar />
       <PizzaList />
       <AuthenticatedContent />
+      <CreatePizza />
     </div>
   );
 };

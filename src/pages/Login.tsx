@@ -6,9 +6,10 @@ import { useAuth } from "../context/AuthContext";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, isAuthenticated } = useAuth();
   const handleLogin = async (username: string, password: string) => {
     const success = await authServiceLogin(username, password);
+
     if (success) {
       // Redirige al dashboard o muestra un mensaje de éxito
       console.log("Login successful");
@@ -26,7 +27,7 @@ const Login: React.FC = () => {
         <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
           Pizza Station
         </h1>
-        <LoginForm onLogin={handleLogin} />
+        {isAuthenticated} <LoginForm onLogin={handleLogin} />
       </div>
     </div>
   );
